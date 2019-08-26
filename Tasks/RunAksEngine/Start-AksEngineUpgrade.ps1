@@ -9,31 +9,31 @@ $Location = Get-VstsInput -Name location
 $AuthMethod = Get-VstsInput -Name authMethod
 $UpgradeVersion = Get-VstsInput -Name upgradeVersion
 $Debug = Get-VstsInput -Name debug
-$Argument = @()
-$Argument += '--api-model'
-$Argument += $ApiModel
-$Argument += '--subscription-id'
-$Argument += $Subscription
-$Argument += '--resource-group'
-$Argument += $ResourceGroupName
-$Argument += '--location'
-$Argument += $Location
-$Argument += '--upgrade-version'
-$Argument += $UpgradeVersion
+$Argument = New-Object 'System.Collections.Generic.List[System.Object]'
+$Argument.Add('--api-model')
+$Argument.Add($ApiModel)
+$Argument.Add('--subscription-id')
+$Argument.Add($Subscription)
+$Argument.Add('--resource-group')
+$Argument.Add($ResourceGroupName)
+$Argument.Add('--location')
+$Argument.Add($Location)
+$Argument.Add('--upgrade-version')
+$Argument.Add($UpgradeVersion)
 
 if ($AuthMethod -eq 'client_secret') {
     . $PSScriptRoot/Set-AksEngineAuth.ps1
 }
 else {
-    $Argument += '--auth-method'
-    $Argument += $AuthMethod
+    $Argument.Add('--auth-method')
+    $Argument.Add($AuthMethod)
 }
 
 if ($Debug) {
-    $Argument += '--debug'
+    $Argument.Add('--debug')
 }
 
-aks-engine scale $Argument $Argument
+aks-engine scale $Argument
 if ($LASTEXITCODE -gt 0) {
     throw 'An error was thrown.'
 }

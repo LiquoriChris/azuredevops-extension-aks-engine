@@ -8,32 +8,32 @@ $CaCertificateKey = Get-VstsInput -Name caCertificateKeyPath
 $SetValue = Get-VstsInput -Name setValue
 $OutputDirectory = Get-VstsInput -Name outputDirectory
 $Debug = Get-VstsInput -Name debug
-$Argument = @()
-$Argument += '--api-model'
-$Argument += $ApiModel
+$Argument = New-Object 'System.Collections.Generic.List[System.Object]'
+$Argument.Add('--api-model')
+$Argument.Add($ApiModel)
 
 if ($OutputDirectory) {
-    $Argument += '--output-directory'
-    $Argument += $OutputDirectory
+    $Argument.Add('--output-directory')
+    $Argument.Add($OutputDirectory)
 }
 
 if ($CaCertificatePath -and $CaCertificateKey) {
-    $Argument += '--ca-certificate-path'
-    $Argument += $CaCertificatePath
-    $Argument += '--ca-private-key-path'
-    $Argument += $CaCertificateKey
+    $Argument.Add('--ca-certificate-path')
+    $Argument.Add($CaCertificatePath)
+    $Argument.Add('--ca-private-key-path')
+    $Argument.Add($CaCertificateKey)
 }
 
 if ($SetValue) {
-    $Argument += '--set'
-    $Argument += $SetValue
+    $Argument.Add('--set')
+    $Argument.Add($SetValue)
 }
 
 if ($Debug) {
-    $Argument += '--debug'
+    $Argument.Add('--debug')
 }
 
-aks-engine generate $Argument $Argument
+aks-engine generate $Argument
 if ($LASTEXITCODE -gt 0) {
     throw 'An error was thrown.'
 }
