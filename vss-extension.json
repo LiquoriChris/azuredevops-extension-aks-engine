@@ -3,7 +3,7 @@
 	"id": "aks-engine",
 	"name": "AKS Engine Tools",
 	"description": "Extension provides AKS-Engine functionality into Azure Pipelines.",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"publisher": "liquorichris",
 	"public":  false,
 	"baseUri": "https://github.com/liquorichris",
