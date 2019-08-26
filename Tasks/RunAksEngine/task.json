@@ -1,0 +1,173 @@
+{
+	"id": "a2e88357-905a-4528-b4dc-b607fdb2c55d",
+	"name": "InvokeAksEngine",
+	"friendlyName": "Run AKS-Engine",
+	"description": "Run AKS-Engine command line tool",
+	"author": "liquorichris",
+	"helpMarkDown": "Run AKS-Engine",
+	"category": "Deploy",
+	"visibility": [
+		"Build",
+		"Release"
+	],
+	"demands": [],
+	"version": {
+        "Major": "0",
+        "Minor": "0",
+        "Patch": "1"
+	},
+	"instanceNameFormat": "Run AKS-Engine",
+	"groups": [
+		{
+			"name": "advanced",
+			"displayName": "Advanced",
+			"isExpanded": false
+		}
+	],
+	"inputs": [
+		{
+			"name": "command",
+			"type": "pickList",
+			"label": "AKS-Engine Command",
+			"defaultValue": "generate",
+			"required": true,
+			"helpMarkDown": "AKS-Engine command to run.",
+			"options": {
+				"generate": "generate",
+				"deploy": "deploy",
+				"scale": "scale",
+				"upgrade": "upgrade"
+			}
+		},
+		{
+            "name": "apiModel",
+            "type": "filePath",
+            "label": "API Model",
+            "required": true,
+            "helpMarkDown": "Path of the apimodel file to run AKS-Engine. Note: File must be in json format."
+		},
+		{
+			"name": "caCertificatePath",
+			"type": "string",
+			"defaultValue": null,
+			"label": "CA Certificate Path",
+			"helpMarkDown": "Path to the CA certificate to generate certificates for the Kubernetes cluster. CA certificate must be in a PEM format.",
+			"visibleRule": "command = generate"
+		},
+		{
+			"name": "caCertificateKeyPath",
+			"type": "string",
+			"defaultValue": null,
+			"label": "CA Certificate Key Path",
+			"helpMarkDowm": "Path to the CA certificate key file to generate certificates for the Kubernetes cluster. Key file must be in a PEM format.",
+			"visibleRule": "command = generate"
+		},
+		{
+			"name": "setValue",
+			"type": "string",
+			"defaultValue": null,
+			"label": "Set Values",
+			"helpMarkDown": "Set values in api model in the command line. Supports multiple key/value pairs separated with commas: key1=value1,key2=value2",
+			"visibleRule": "command = generate"
+		},
+		{
+			"name": "outputDirectory",
+			"type": "filePath",
+			"defaultValue": null,
+			"label": "Output Directory",
+			"helpMarkDown": "Path to store the file needed to deploy the Kubernetes cluster. Default is current directory/_output",
+			"visibleRule": "command = generate"
+		},
+		{
+			"name": "newNodeCount",
+			"type": "int",
+			"required": true,
+			"label": "New Node Count",
+			"helpMarkDown": "Enter the number of nodes when scaling out or down. Must not be equal to the current number of nodes.",
+			"visibleRule": "command = scale"
+		},
+		{
+			"name": "clusterIPAddress",
+			"type": "string",
+			"label": "Cluster IP Address", 
+			"required": true,
+			"helpMarkDown": "Enter the IP Address of the Kubernetes cluster. This is required when scaling the cluster out or down.",
+			"visibleRule": "command = scale"
+		},
+		{
+			"name": "upgradeVersion",
+			"type": "string",
+			"required": true,
+			"label": "Kubernetes Upgrade Version",
+			"helpMarkDown": "Enter the desired Kubernetes version.",
+			"visibleRule": "command = upgrade"
+		},
+		{
+			"name": "authMethod",
+			"type": "pickList",
+			"label": "Authentication Method",
+			"required": false,
+			"helpMarkDown": "Authentication method to use when running AKS-Engine command line tools. client_secert is the default and will need to provide the service principal id and secert.",
+			"options": {
+				"spn": "client_secret",
+				"cli": "cli"
+			},
+			"visibleRule": "command = upgrade || command = scale"
+		},
+		{
+			"name": "clientId",
+			"type": "string",
+			"label": "Client Id",
+			"required": true,
+			"helpMarkDown": "Azure service principal client id. This will be used to create and configure Azure resources when deploying the Kubernetes cluster. Service principal must have Contributor role assignment on resource group to deploy a cluster.",
+			"visibleRule": "authMethod = spn"
+		},
+		{
+			"name": "clientSecret",
+			"type": "string",
+			"label": "Client Secret",
+			"required": true,
+			"helpMarkDown": "Azure service principal client secert. This will be the generated secret provided when creating the service principal.",
+			"visibleRule": "authMethod = spn"
+		},
+		{
+			"name": "subscription",
+			"type": "string",
+			"label": "Subscription",
+			"required": true,
+			"helpMarkDown": "Azure subscription id to deploy the Kubernetes cluster.",
+			"visibleRule": "command = upgrade || command = scale"
+		},
+		{
+			"name": "resourceGroupName",
+			"type": "string",
+			"label": "Resource Group",
+			"required": true,
+			"helpMarkDown": "Azure resource group to deploy the Kubernetes cluster.",
+			"visibleRule": "command = upgrade || command = scale"
+		},
+		{
+			"name": "location",
+			"type": "string",
+			"label": "Location",
+			"required": true,
+			"helpMarkDown": "Azure region to deploy the Kubernetes cluster.",
+			"visibleRule": "command = upgrade || command = scale"
+		},
+		{
+			"name": "debug",
+			"type": "boolean",
+			"label": "Debug",
+			"defaultValue": false,
+			"helpMarkDown": "Run aks-engine.exe in debug model for more verbose output.",
+			"groupName": "advanced"
+		}
+	],
+	"execution": {
+		"PowerShell3": {
+			"target": "$(currentDirectory)/Invoke-AksEngine.ps1",
+			"argumentFormat": "",
+			"workingDirectory": "$(currentDirectory)"
+		}
+	}
+}

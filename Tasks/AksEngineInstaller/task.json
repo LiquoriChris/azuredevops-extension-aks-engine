@@ -1,0 +1,48 @@
+{
+	"id": "c5f9f3db-4ea1-4c5d-b841-077c6d94f118",
+	"name": "AksEngineInstaller",
+	"friendlyName": "AKS-Engine Installer",
+	"description": "Install the latest version of AKS Engine.",
+	"author": "liquorichris",
+	"helpMarkDown": "AKS-Engine Installer",
+	"category": "Deploy",
+	"visibility": [
+		"Release"
+	],
+	"demands": [],
+	"version": {
+        "Major": "0",
+        "Minor": "0",
+        "Patch": "1"
+	},
+	"instanceNameFormat": "AKS-Engine Installer",
+	"inputs": [
+		{
+			"name": "version",
+			"type": "pickList",
+			"label": "AKS-Engine Version",
+			"defaultValue": "Latest",
+			"required": true,
+			"helpMarkDown": "AKS-Engine version to install on the build agent. Task will install latest if version is not specified.",
+			"options": {
+				"latest": "Latest",
+				"specificVersion": "Specific Version"
+			}
+		},
+		{
+            "name": "aksEngineVersion",
+            "type": "string",
+            "label": "AKS-Engine Version",
+            "required": true,
+            "helpMarkDown": "Specify the version of AKS-Engine to install on the agent. Available versions can be viewed on <a href=\"https://github.com/Azure/aks-engine/releases/\">nuget</a>.",
+            "visibleRule": "version = specificVersion"
+        }
+	],
+	"execution": {
+		"PowerShell3": {
+			"target": "$(currentDirectory)/Install-AksEngine.ps1",
+			"argumentFormat": "",
+			"workingDirectory": "$(currentDirectory)"
+		}
+	}
+}
