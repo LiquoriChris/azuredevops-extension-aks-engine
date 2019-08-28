@@ -13,3 +13,7 @@ if ($Command -eq 'scale') {
 if ($Command -eq 'upgrade') {
     . $PSScriptRoot\Start-AksEngineUpgrade.ps1
 }
+
+if ($Command -eq 'deploy') {
+    . $PSScriptRoot\Start-AksEngineDeploy.ps1
+}
