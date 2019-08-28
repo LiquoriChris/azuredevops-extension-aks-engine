@@ -3,7 +3,7 @@ param ()
 
 $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
 $ApiModel = Get-VstsInput -Name apiModel
-$Subscription = Get-VstsInput -Name subscription
+$SubscriptionId = Get-VstsInput -Name subscriptionId
 $ResourceGroupName = Get-VstsInput -Name resourceGroupName
 $Location = Get-VstsInput -Name location
 $AuthMethod = Get-VstsInput -Name authMethod
@@ -13,7 +13,7 @@ $Argument = New-Object 'System.Collections.Generic.List[System.Object]'
 $Argument.Add('--api-model')
 $Argument.Add($ApiModel)
 $Argument.Add('--subscription-id')
-$Argument.Add($Subscription)
+$Argument.Add($SubscriptionId)
 $Argument.Add('--resource-group')
 $Argument.Add($ResourceGroupName)
 $Argument.Add('--location')
